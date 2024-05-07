@@ -5,10 +5,6 @@ import clientSide.entities.CoachStates;
 import clientSide.entities.RefereeStates;
 import clientSide.stubs.GeneralReposStub;
 import serverSide.entities.*;
-import java.util.Arrays;
-import java.util.Comparator;
-import commInfra.*;
-import genclass.GenericIO;
 
 public class RefereeSite {
 
@@ -22,8 +18,14 @@ public class RefereeSite {
    */
   private boolean isMatchFinalized = false;
 
+  /**
+   * Number of teams ready for trial
+   */
   private int nTeamsReady = 0;
 
+  /**
+   * Had trial been called
+   */
   private boolean trialCalled = false;
 
   public RefereeSite(GeneralReposStub repos) {
@@ -31,9 +33,9 @@ public class RefereeSite {
   }
 
   /**
-   * Declare match winner
+   * Declare match winner and unblock coaches
    * 
-   * and unblock coaches
+   * Called by referee
    */
   public synchronized void endMatch() {
     RefereeSiteClientProxy proxy = (RefereeSiteClientProxy) Thread.currentThread();
@@ -64,6 +66,11 @@ public class RefereeSite {
     }
   }
 
+  /**
+   * Call new trial
+   * 
+   * Called by referee
+   */
   public synchronized void callTrial() {
     RefereeSiteClientProxy proxy = (RefereeSiteClientProxy) Thread.currentThread();
 
@@ -107,6 +114,9 @@ public class RefereeSite {
     notifyAll();
   }
 
+  /**
+   *  Shutdown referee site server 
+   */
   public synchronized void shutdown() {
     ServerRefereeSite.waitConnection = false;
     notifyAll();

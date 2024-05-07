@@ -1,15 +1,23 @@
 package serverSide.sharedRegions;
 
-import java.util.Arrays;
-
 import clientSide.entities.CoachStates;
 import clientSide.entities.ContestantStates;
 import clientSide.entities.GameConstants;
 import serverSide.entities.ContestantsBenchClientProxy;
 import serverSide.main.ServerContestantsBench;
 import clientSide.stubs.GeneralReposStub;
-import genclass.GenericIO;
 
+/**
+ * Contestants bench
+ * 
+ * Keep track of contestants and their strength
+ * 
+ * Public methods are executed in mutual exclusion
+ * 
+ * Sync points:
+ * Contestants wait for coach to select them for trial
+ * Coaches wait for contestants to follow its advice
+ */
 public class ContestantsBench {
 
   /**
@@ -17,12 +25,24 @@ public class ContestantsBench {
    */
   private final GeneralReposStub repos;
 
+  /**
+   * Array of contestants selected to trial
+   */
   private boolean contestantSelected[][];
 
+  /**
+   * Array of number of contestants in position at each team
+   */
   private int nContestantStandInPos[];
 
+  /**
+   * Array of strength per contestant
+   */
   private int contestantRegister[];
 
+  /**
+   * Boolean flag to match end
+   */
   private boolean isMatchEnded = false;
 
   public ContestantsBench(GeneralReposStub repos) {
@@ -33,6 +53,12 @@ public class ContestantsBench {
     this.contestantRegister = new int[10];
   }
 
+  /**
+   * Contestant wait for coach signal
+   * 
+   * Called by contestant: wait for coach selection,
+   * then go to STAND_IN_POSITION state and unblock coach
+   */
   public synchronized void waitForCoachCall() {
     ContestantsBenchClientProxy proxy = (ContestantsBenchClientProxy) Thread.currentThread();
     int contestantId = proxy.getContestantId();
@@ -59,8 +85,7 @@ public class ContestantsBench {
   /**
    * Contestant stay in position if selected by coach
    * 
-   * Called by contestant: wait for coach signal,
-   * then go to STAND_IN_POSITION state and unblock coach
+   * Called by contestant: go to STAND_IN_POSITION state and unblock coach
    */
   public synchronized void followCoachAdvice() {
     ContestantsBenchClientProxy proxy = (ContestantsBenchClientProxy) Thread.currentThread();
@@ -72,8 +97,6 @@ public class ContestantsBench {
     proxy.setContestantState(ContestantStates.STAND_IN_POSITION);
     this.repos.setContestantState(contestantId, ContestantStates.STAND_IN_POSITION);
 
-    // GenericIO.writelnString("Contestant " + contestantId + " from team " + team + " is ready to trial");
-
     /* Notify coach advice was followed */
     this.nContestantStandInPos[team]++;
     notifyAll();
@@ -84,7 +107,7 @@ public class ContestantsBench {
    * 
    * Called by contestant: go to state SEAT_AT_THE_BENCH
    */
-  public void seatDown() {
+  public synchronized void seatDown() {
     ContestantsBenchClientProxy proxy = (ContestantsBenchClientProxy) Thread.currentThread();
 
     int contestantId = proxy.getContestantId();
@@ -161,11 +184,6 @@ public class ContestantsBench {
       }
     }
 
-    // for (int i = 0; i < 10; i++) {
-    //   GenericIO.writelnString(i + ": " + this.contestantRegister[i]);
-    // }
-    // GenericIO.writelnString();
-
     /* Register contestant in current trial */
     this.repos.setContestantInTrial(1 + i1, coachId * 3);
     this.repos.setContestantInTrial(1 + i2, coachId * 3 + 1);
@@ -190,12 +208,20 @@ public class ContestantsBench {
     this.nContestantStandInPos[coachId] = 0;
   }
 
+  /**
+   * End match
+   * 
+   * Called by referee
+   */
   public synchronized void endMatch() {
     /* Notify teams game ended */
     this.isMatchEnded = true;
     notifyAll();
   }
 
+  /**
+   * Shut down contestants bench server
+   */
   public synchronized void shutdown() {
     ServerContestantsBench.waitConnection = false;
     notifyAll();

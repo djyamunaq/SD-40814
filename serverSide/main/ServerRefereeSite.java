@@ -9,18 +9,26 @@ import serverSide.sharedRegions.RefereeSite;
 import serverSide.sharedRegions.RefereeSiteInterface;
 import clientSide.stubs.GeneralReposStub;
 
+/**
+ * Server side of the Referee Site.
+ *
+ * Implementation of a client-server model of type 2 (server replication).
+ * Communication is based on a communication channel under the TCP protocol.
+ */
 public class ServerRefereeSite {
-     public static boolean waitConnection;
+    public static boolean waitConnection;
 
     public static void main(String[] args) {
-        RefereeSite refereeSite; // barber shop (service to be rendered)
-        RefereeSiteInterface refereeSiteInterface; // interface to the barber shop
+        RefereeSite refereeSite; // referee site (service to be rendered)
+        RefereeSiteInterface refereeSiteInterface; // interface to the referee site
         GeneralReposStub reposStub; // stub to the general repository
         ServerCom scon, sconi; // communication channels
         int portNumb = -1; // port number for listening to service requests
         String reposServerName; // name of the platform where is located the server for the general repository
         int reposPortNumb = -1; // port nunber where the server for the general repository is listening to
                                 // service requests
+
+        /* Get running parameters from command line */
 
         if (args.length != 3) {
             GenericIO.writelnString("Wrong number of parameters!");
@@ -68,7 +76,7 @@ public class ServerRefereeSite {
             try {
                 sconi = scon.accept(); // enter listening procedure
                 cliProxy = new RefereeSiteClientProxy(sconi, refereeSiteInterface); // start a service provider agent to
-                                                                                  // address
+                                                                                    // address
                 cliProxy.start(); // the request of service
             } catch (SocketTimeoutException e) {
             }

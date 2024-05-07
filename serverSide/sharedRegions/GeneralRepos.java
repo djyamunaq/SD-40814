@@ -1,7 +1,6 @@
 package serverSide.sharedRegions;
 
 import serverSide.main.*;
-import serverSide.entities.*;
 import commInfra.*;
 import genclass.GenericIO;
 import genclass.TextFile;
@@ -42,22 +41,28 @@ public class GeneralRepos {
    private final int[] contestantStrength;
 
    /**
-    * State of the contestants
+    * State of the referee
     */
    private int refereeState;
 
    /**
-    * State of the contestants
+    * State of the rope
     */
    private int ropeState;
 
    /**
-    * State of the contestants
+    * Current trial number
     */
    private int trialNumber;
 
+   /**
+    * Has game ented
+    */
    private boolean gameEnd;
 
+   /**
+    * Register of contestants in match
+    */
    private int[] contestantQueue;
 
    /**

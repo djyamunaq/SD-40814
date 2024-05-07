@@ -6,9 +6,16 @@ import commInfra.Message;
 import commInfra.MessageType;
 import clientSide.entities.*;
 
+/**
+ * Stub to the contestants bench stub.
+ *
+ * It instantiates a remote reference to the contestants stub.
+ * Implementation of a client-server model of type 2 (server replication).
+ * Communication is based on a communication channel under the TCP protocol.
+ */
 public class ContestantsBenchStub {
     /**
-     * Name of the platform where is located the barber shop server.
+     * Name of the platform where is located the contestant bench server
      */
     private String serverHostName;
 
@@ -18,7 +25,7 @@ public class ContestantsBenchStub {
     private int serverPortNumb;
 
     /**
-     * Instantiation of a stub to the contestants bench
+     * Instantiation of a stub to the contestants bench stub
      *
      * @param serverHostName name of the platform where is located the contestants
      *                       bench
@@ -31,9 +38,9 @@ public class ContestantsBenchStub {
     }
 
     /**
-     * Contestant wait for call from coach
+     * Send message to make contestant wait for call from coach
      * 
-     * Called by contestant: wait for coach call
+     * Called by contestant
      */
     public void waitForCoachCall() {
         /* Communication channel */
@@ -95,10 +102,9 @@ public class ContestantsBenchStub {
     }
 
     /**
-     * Contestant stay in position if selected by coach
+     * Send message to make contestant stay in position if selected by coach
      * 
-     * Called by contestant: wait for coach signal to stand up,
-     * then go to STAND_IN_POSITION state and unblock coach
+     * Called by contestant
      */
     public void followCoachAdvice() {
         /* Communication channel */
@@ -152,9 +158,9 @@ public class ContestantsBenchStub {
     }
 
     /**
-     * Contestant go back to bench
+     * Send message to make contestant go back to bench
      * 
-     * Called by contestant: go to state SEAT_AT_THE_BENCH
+     * Called by contestant
      */
     public void seatDown() {
         /* Communication channel */
@@ -217,11 +223,9 @@ public class ContestantsBenchStub {
     }
 
     /**
-     * Call contestants to trial
+     * Send message to call contestants to trial
      * 
-     * Called by coach: wait referee command to assert trial,
-     * then go to ASSEMBLE_TEAM state, assemble team and give
-     * signal to contestants to participate in trial
+     * Called by coach
      */
     public void callContestants() {
         /* Communication channel */
@@ -275,7 +279,7 @@ public class ContestantsBenchStub {
     }
 
     /**
-     * Tell contestants bench that match ended
+     * Send message to tell contestants bench that match ended
      * 
      * Called by referee
      */

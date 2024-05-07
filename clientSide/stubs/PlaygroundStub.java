@@ -6,9 +6,16 @@ import commInfra.Message;
 import commInfra.MessageType;
 import clientSide.entities.*;
 
+/**
+ * Stub to the playground.
+ *
+ * It instantiates a remote reference to the playground.
+ * Implementation of a client-server model of type 2 (server replication).
+ * Communication is based on a communication channel under the TCP protocol.
+ */
 public class PlaygroundStub {
     /**
-     * Name of the platform where is located the barber shop server.
+     * Name of the platform where is located the playground server
      */
     private String serverHostName;
 
@@ -18,7 +25,7 @@ public class PlaygroundStub {
     private int serverPortNumb;
 
     /**
-     * Instantiation of a stub to the playground
+     * Instantiation of a stub to the playground stub
      *
      * @param serverHostName name of the platform where is located the playground
      *                       server
@@ -30,7 +37,9 @@ public class PlaygroundStub {
     }
 
     /**
-     * Check if match ended
+     * Send message to check if match ended
+     * 
+     * Called by referee
      * 
      * @return true if match ended, false otherwise
      */
@@ -70,7 +79,9 @@ public class PlaygroundStub {
     }
 
     /**
-     * Check if game ended
+     * Send message to check if game ended
+     * 
+     * Called by referee
      * 
      * @return true if game ended, false otherwise
      */
@@ -109,10 +120,9 @@ public class PlaygroundStub {
     }
 
     /**
-     * Contestant done pulling rope
+     * Send message to make contestant done pulling rope
      * 
-     * Called by contestant: unblock referee to assert trial and then
-     * wait for referee signal that trial is asserted
+     * Called by contestant
      */
     public void amDone() {
         /* Communication channel */
@@ -162,10 +172,9 @@ public class PlaygroundStub {
     }
 
     /**
-     * Contestant get ready to trial
+     * Send message to make contestant get ready to trial
      * 
-     * Called by contestant: wait for referee command to start trial,
-     * then go to state DO_YOUR_BEST
+     * Called by contestant
      */
     public void getReady() {
         /* Communication channel */
@@ -219,10 +228,9 @@ public class PlaygroundStub {
     }
 
     /**
-     * Pull the rope
+     * Send message to make contestant pull the rope
      * 
-     * Called by contestant: modify rope state (Add 1 if in team 1, sub 1 if in team
-     * 2)
+     * Called by contestant
      */
     public synchronized void pullTheRope() {
         /* Communication channel */
@@ -284,11 +292,9 @@ public class PlaygroundStub {
     }
 
     /**
-     * Start a new trial
+     * Send message to start a new trial
      * 
-     * Called by referee: wait for teams ready signal,
-     * then go to WAIT_FOR_TRIAL_CONCLUSION state
-     * and unblock participants to start trial
+     * Called by referee
      */
     public void startTrial() {
         /* Communication channel */
@@ -336,11 +342,9 @@ public class PlaygroundStub {
     }
 
     /**
-     * Assert trial decision
+     * Send message to assert trial decision
      * 
-     * Called by referee: wait for contestant done signal,
-     * then assert decision over trial result and unblock
-     * coaches and contestants
+     * Called by referee
      * 
      * @return true if still asserting trial, false otherwise
      */
@@ -380,10 +384,9 @@ public class PlaygroundStub {
     }
 
     /**
-     * Announce new game
+     * Send message to announce new game
      * 
-     * Called by referee: set game variables and go to
-     * START_OF_A_GAME state
+     * Called by referee
      */
     public void announceNewGame() {
         /* Communication channel */
@@ -431,10 +434,9 @@ public class PlaygroundStub {
     }
 
     /**
-     * Declare game winner
+     * Send message to declare game winner
      * 
-     * Called by referee: go to END_OF_A_GAME state,
-     * then decide and declare game winner
+     * Called by referee
      */
     public synchronized void declareGameWinner() {
         /* Communication channel */
@@ -482,10 +484,9 @@ public class PlaygroundStub {
     }
 
     /**
-     * Declare match winner
+     * Send message to declare match winner
      * 
-     * Called by referee: go to END_OF_THE_MATCH state
-     * and unblock possibly blocked contestants
+     * Called by referee
      */
     public synchronized void declareMatchWinner() {
         /* Communication channel */
@@ -533,10 +534,9 @@ public class PlaygroundStub {
     }
 
     /**
-     * Review notes (Coach sleep)
+     * Send message to make coach review notes
      * 
-     * Called by coach to wait referee assert trial and go to
-     * WAIT_FOR_REFEREE_COMMAND state
+     * Called by coach
      */
     public synchronized void reviewNotes() {
         /* Communication channel */
@@ -589,6 +589,9 @@ public class PlaygroundStub {
         ((Coach) Thread.currentThread()).setCoachState(inMessage.getCoachState());
     }
 
+    /**
+     * Send message to shutdown playground server
+     */
     public void shutdown() {
         ClientCom com; // communication channel
         Message outMessage, // outgoing message

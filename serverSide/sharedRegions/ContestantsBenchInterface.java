@@ -3,12 +3,19 @@ package serverSide.sharedRegions;
 import commInfra.Message;
 import commInfra.MessageException;
 import commInfra.MessageType;
-import genclass.GenericIO;
 import clientSide.entities.CoachStates;
 import clientSide.entities.ContestantStates;
 import clientSide.entities.GameConstants;
 import serverSide.entities.ContestantsBenchClientProxy;
 
+/**
+ * Interface to the contestants bench.
+ *
+ * It is responsible to validate and process the incoming message, execute the
+ * corresponding method on the contestants bench and generate the outgoing message.
+ * Implementation of a client-server model of type 2 (server replication).
+ * Communication is based on a communication channel under the TCP protocol.
+ */
 public class ContestantsBenchInterface {
     private final ContestantsBench contestantsBench;
 

@@ -8,6 +8,14 @@ import commInfra.MessageException;
 import commInfra.MessageType;
 import serverSide.entities.RefereeSiteClientProxy;
 
+/**
+ * Interface to the referee site.
+ *
+ * It is responsible to validate and process the incoming message, execute the
+ * corresponding method on the referee site and generate the outgoing message.
+ * Implementation of a client-server model of type 2 (server replication).
+ * Communication is based on a communication channel under the TCP protocol.
+ */
 public class RefereeSiteInterface {
 
     private final RefereeSite refereeSite;

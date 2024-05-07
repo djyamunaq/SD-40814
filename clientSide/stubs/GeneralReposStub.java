@@ -12,22 +12,21 @@ import commInfra.*;
  * Implementation of a client-server model of type 2 (server replication).
  * Communication is based on a communication channel under the TCP protocol.
  */
-
 public class GeneralReposStub {
     /**
-     * Name of the platform where is located the general repository server.
+     * Name of the platform where is located the general repository server
      */
 
     private String serverHostName;
 
     /**
-     * Port number for listening to service requests.
+     * Port number for listening to service requests
      */
 
     private int serverPortNumb;
 
     /**
-     * Instantiation of a stub to the general repository.
+     * Instantiation of a stub to the general repository stub
      *
      * @param serverHostName name of the platform where is located the barber shop
      *                       server
@@ -40,37 +39,12 @@ public class GeneralReposStub {
     }
 
     /**
-     * Operation initialization of the simulation.
+     * Send message to set coach state
      *
-     * @param fileName logging file name
-     * @param nIter    number of iterations of the customer life cycle
+     * @param id coach id
+     *                       
+     * @param state coach state
      */
-
-    // public void initSimul (String fileName, int nIter)
-    // {
-    // ClientCom com; // communication channel
-    // Message outMessage, // outgoing message
-    // inMessage; // incoming message
-
-    // com = new ClientCom (serverHostName, serverPortNumb);
-    // while (!com.open ())
-    // { try
-    // { Thread.sleep ((long) (1000));
-    // }
-    // catch (InterruptedException e) {}
-    // }
-    // outMessage = new Message (MessageType.SETNFIC, fileName);
-    // com.writeObject (outMessage);
-    // inMessage = (Message) com.readObject ();
-    // if (inMessage.getMsgType() != MessageType.NFICDONE)
-    // { GenericIO.writelnString ("Thread " + Thread.currentThread ().getName () +
-    // ": Invalid message type!");
-    // GenericIO.writelnString (inMessage.toString ());
-    // System.exit (1);
-    // }
-    // com.close ();
-    // }
-
     public void setCoachState(int id, int state) {
         ClientCom com; // communication channel
         Message outMessage, // outgoing message
@@ -96,7 +70,7 @@ public class GeneralReposStub {
     }
 
     /**
-     * Set contestant state.
+     * Send message to set contestant state
      *
      * @param id    contestant id
      * @param state contestant state
@@ -126,7 +100,7 @@ public class GeneralReposStub {
     }
 
     /**
-     * Set contestant state.
+     * Send message to set contestant state
      *
      * @param contestantId contestant id
      * @param pos          position of contestant in trial queue
@@ -156,7 +130,7 @@ public class GeneralReposStub {
     }
 
     /**
-     * Set contestant state.
+     * Send message to set contestant state.
      *
      * @param id    contestant id
      * @param value contestant strength
@@ -186,7 +160,7 @@ public class GeneralReposStub {
     }
 
     /**
-     * Set referee state.
+     * Send message to set referee state.
      *
      * @param refereeState referee state
      */
@@ -215,7 +189,7 @@ public class GeneralReposStub {
     }
 
     /**
-     * Set trial number.
+     * Send message to set trial number.
      *
      * @param value trial number
      */
@@ -244,7 +218,7 @@ public class GeneralReposStub {
     }
 
     /**
-     * Set trial number.
+     * Send message to set trial number.
      *
      * @param value trial number
      */
@@ -273,7 +247,7 @@ public class GeneralReposStub {
     }
 
     /**
-     * Write a state line at the end of the logging file.
+     * Send message to write a state line at the end of the logging file.
      *
      * The current game number
      */
@@ -302,7 +276,7 @@ public class GeneralReposStub {
     }
 
     /**
-     * Write a state line at the end of the logging file.
+     * Send message to write a state line at the end of the logging file.
      *
      * The game result
      */
@@ -331,7 +305,7 @@ public class GeneralReposStub {
     }
 
     /**
-     * Write a state line at the end of the logging file
+     * Send message to write a state line at the end of the logging file
      *
      * The match end result in a line to be printed
      */
@@ -359,6 +333,9 @@ public class GeneralReposStub {
         com.close();
     }
 
+    /**
+     *  Send message to shutdown general repo server 
+     */
     public void shutdown() {
         ClientCom com; // communication channel
         Message outMessage, // outgoing message

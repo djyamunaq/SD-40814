@@ -5,7 +5,6 @@ import clientSide.entities.ContestantStates;
 import clientSide.entities.GameConstants;
 import clientSide.entities.RefereeStates;
 import clientSide.stubs.GeneralReposStub;
-import genclass.GenericIO;
 import serverSide.entities.*;
 
 /**
@@ -48,24 +47,33 @@ public class Playground {
     private boolean isKnockOut = false;
 
     /**
-     * Match ended
+     * Had match ended
      */
     private boolean isMatchFinalized = false;
 
     /**
-     * Game ended
+     * Has game ended
      */
     private boolean isGameFinalized = false;
 
+    /**
+     * Has trial ended
+     */
     private boolean trialStarted = false;
 
+    /**
+     * Had trial been asserted
+     */
     private boolean trialAsserted = false;
 
     /**
-     * Shift of the rope
+     * State (Shift) of the rope
      */
     private int ropeState = 0;
 
+    /**
+    * Register for each contestant done state
+    */
     private int contestantsDone[];
 
     /**
@@ -91,7 +99,7 @@ public class Playground {
      * 
      * @return true if match ended, false otherwise
      */
-    public boolean matchEnded() {
+    public synchronized boolean matchEnded() {
         return this.isMatchFinalized;
     }
 
@@ -100,7 +108,7 @@ public class Playground {
      * 
      * @return true if game ended, false otherwise
      */
-    public boolean gameEnded() {
+    public synchronized boolean gameEnded() {
         return this.isGameFinalized;
     }
 
@@ -125,8 +133,6 @@ public class Playground {
             } catch (InterruptedException e) {
             }
         }
-        
-        // GenericIO.writelnString("Game=" + this.currentGame + " | Trial=" + this.currentTrial + " | Team=" + team);
     }
 
     /**
@@ -346,6 +352,9 @@ public class Playground {
         }
     }
 
+    /**
+     * Shutdown playground server
+     */
     public synchronized void shutdown() {
         ServerPlayground.waitConnection = false;
         notifyAll();

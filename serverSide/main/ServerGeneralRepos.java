@@ -6,8 +6,13 @@ import commInfra.ServerCom;
 import genclass.GenericIO;
 import serverSide.entities.*;
 import serverSide.sharedRegions.*;
-import clientSide.*;
 
+/**
+ *    Server side of the General Repository of Information.
+ *
+ *    Implementation of a client-server model of type 2 (server replication).
+ *    Communication is based on a communication channel under the TCP protocol.
+ */
 public class ServerGeneralRepos {
     public static boolean waitConnection;
 
@@ -16,6 +21,8 @@ public class ServerGeneralRepos {
         GeneralReposInterface reposInterface; // stub to the general repository
         ServerCom scon, sconi; // communication channels
         int portNumb = -1; // port number for listening to service requests
+
+        /* Get running parameters from command line */
 
         if (args.length != 1) {
             GenericIO.writelnString("Wrong number of parameters!");

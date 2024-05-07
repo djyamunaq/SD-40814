@@ -15,7 +15,6 @@ import clientSide.entities.RefereeStates;
  * Implementation of a client-server model of type 2 (server replication).
  * Communication is based on a communication channel under the TCP protocol.
  */
-
 public class GeneralReposInterface {
     /**
      * Reference to the general repository.
@@ -50,11 +49,6 @@ public class GeneralReposInterface {
         /* validation of the incoming message */
 
         switch (inMessage.getMsgType()) {
-            // case MessageType.SETNFIC:
-            // if (inMessage.getLogFName() == null)
-            // throw new MessageException("Name of the logging file is not present!",
-            // inMessage);
-            // break;
             case MessageType.SETREFEREESTATE:
                 if ((inMessage.getRefereeState() < RefereeStates.START_OF_THE_MATCH)
                         || (inMessage.getRefereeState() > RefereeStates.END_OF_THE_MATCH)) {

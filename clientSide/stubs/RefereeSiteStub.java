@@ -6,9 +6,16 @@ import commInfra.Message;
 import commInfra.MessageType;
 import clientSide.entities.*;
 
+/**
+ * Stub to the referee site.
+ *
+ * It instantiates a remote reference to the referee site.
+ * Implementation of a client-server model of type 2 (server replication).
+ * Communication is based on a communication channel under the TCP protocol.
+ */
 public class RefereeSiteStub {
     /**
-     * Name of the platform where is located the barber shop server.
+     * Name of the platform where is located the referee site server
      */
     private String serverHostName;
 
@@ -18,7 +25,7 @@ public class RefereeSiteStub {
     private int serverPortNumb;
 
     /**
-     * Instantiation of a stub to the referee site
+     * Instantiation of a stub to the referee site stub
      *
      * @param serverHostName name of the platform where is located the referee site
      *                       server
@@ -30,6 +37,11 @@ public class RefereeSiteStub {
         this.serverPortNumb = serverPortNumb;
     }
 
+    /**
+     * Send message to end match
+     * 
+     * Called by referee
+     */
     public void endMatch() {
         /* Communication channel */
         ClientCom com;
@@ -67,6 +79,11 @@ public class RefereeSiteStub {
         com.close();
     }
 
+    /**
+     * Send message to make coach wait referee call trial
+     * 
+     * Called by Coach
+     */
     public void waitRefereeCallTrial() {
         /* Communication channel */
         ClientCom com;
@@ -118,6 +135,11 @@ public class RefereeSiteStub {
         ((Coach) Thread.currentThread()).setCoachState(inMessage.getCoachState());
     }
 
+    /**
+     * Send message to make referee call trial
+     * 
+     * Calle by referee
+     */
     public void callTrial() {
         /* Communication channel */
         ClientCom com;
@@ -164,10 +186,9 @@ public class RefereeSiteStub {
     }
 
     /**
-     * Inform referee team is ready
+     * Send message to inform referee team is ready
      * 
-     * Called by coach: wait team ready signal from participants,
-     * then go to WATCH_TRIAL state and inform referee the team is ready to trial
+     * Called by coach
      */
     public synchronized void informReferee() {
         /* Communication channel */
@@ -220,6 +241,9 @@ public class RefereeSiteStub {
         ((Coach) Thread.currentThread()).setCoachState(inMessage.getCoachState());
     }
 
+    /**
+     * Send message to shutdown referee site server
+     */
     public void shutdown() {
         ClientCom com; // communication channel
         Message outMessage, // outgoing message

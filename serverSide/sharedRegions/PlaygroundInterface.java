@@ -9,6 +9,14 @@ import commInfra.MessageException;
 import commInfra.MessageType;
 import serverSide.entities.PlaygroundClientProxy;
 
+/**
+ * Interface to the playground.
+ *
+ * It is responsible to validate and process the incoming message, execute the
+ * corresponding method on the playground and generate the outgoing message.
+ * Implementation of a client-server model of type 2 (server replication).
+ * Communication is based on a communication channel under the TCP protocol.
+ */
 public class PlaygroundInterface {
     private final Playground playground;
 

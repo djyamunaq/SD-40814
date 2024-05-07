@@ -8,18 +8,26 @@ import serverSide.entities.*;
 import serverSide.sharedRegions.*;
 import clientSide.stubs.GeneralReposStub;
 
+/**
+ *    Server side of the Contestants Bench.
+ *
+ *    Implementation of a client-server model of type 2 (server replication).
+ *    Communication is based on a communication channel under the TCP protocol.
+ */
 public class ServerContestantsBench {
     public static boolean waitConnection;
 
     public static void main(String[] args) {
-        ContestantsBench contestantsBench; // barber shop (service to be rendered)
-        ContestantsBenchInterface contestantsBenchInterface; // interface to the barber shop
+        ContestantsBench contestantsBench; // contestants bench (service to be rendered)
+        ContestantsBenchInterface contestantsBenchInterface; // interface to the contestants bench
         GeneralReposStub reposStub; // stub to the general repository
         ServerCom scon, sconi; // communication channels
         int portNumb = -1; // port number for listening to service requests
         String reposServerName; // name of the platform where is located the server for the general repository
         int reposPortNumb = -1; // port nunber where the server for the general repository is listening to
                                 // service requests
+
+        /* Get running parameters from command line */
 
         if (args.length != 3) {
             GenericIO.writelnString("Wrong number of parameters!");
