@@ -339,12 +339,12 @@ public class GeneralRepos {
    private void reportStatus() {
       /* Don't print if game ended */
       if (this.gameEnd) {
-      return;
+         return;
       }
 
       /* Don't print if trial hasn't began */
-      if(this.trialNumber == 0) {
-      return;
+      if (this.trialNumber == 0) {
+         return;
       }
 
       /* Instantiate text file handler */
@@ -487,7 +487,7 @@ public class GeneralRepos {
 
       GenericIO.writelnString("                Game of the Rope - Description of the internal state");
       GenericIO.writelnString(
-         " Ref       Coa 1     Cont 1     Cont 2     Cont 3     Cont 4     Cont 5     Coa 2     Cont 1     Cont 2     Cont 3     Cont 4     Cont 5     Trial");
+            " Ref       Coa 1     Cont 1     Cont 2     Cont 3     Cont 4     Cont 5     Coa 2     Cont 1     Cont 2     Cont 3     Cont 4     Cont 5     Trial");
       /* Close file */
       if (!log.close()) {
          GenericIO.writelnString("The operation of closing the file " + logFileName + " failed!");

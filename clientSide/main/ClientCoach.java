@@ -8,18 +8,23 @@ import clientSide.stubs.GeneralReposStub;
 import clientSide.stubs.PlaygroundStub;
 import clientSide.stubs.RefereeSiteStub;
 
+/**
+ * Client coach class
+ * 
+ * Communicate with stubs to do coach stuff
+ */
 public class ClientCoach {
     public static void main(String[] args) {
-        String refereeSiteServerHostName; // name of the platform where is located the barber shop server
+        String refereeSiteServerHostName; // name of the platform where is located the referee site server
         int refereeSiteServerPortNumb = -1; // port number for listening to service requests
-        String contestantsBenchServerHostName; // name of the platform where is located the barber shop server
+        String contestantsBenchServerHostName; // name of the platform where is located the contestants bench server
         int contestantsBenchServerPortNumb = -1; // port number for listening to service requests
-        String playgroundServerHostName; // name of the platform where is located the barber shop server
+        String playgroundServerHostName; // name of the platform where is located the playground server
         int playgroundServerPortNumb = -1; // port number for listening to service requests
         String genReposServerHostName; // name of the platform where is located the general repository server
         int genReposServerPortNumb = -1; // port number for listening to service requests
 
-        /* getting problem runtime parameters */
+        /* Getting problem runtime parameters */
 
         if (args.length != 8) {
             GenericIO.writelnString("Wrong number of parameters!");
@@ -36,7 +41,6 @@ public class ClientCoach {
             GenericIO.writelnString("args[1] is not a valid port number!");
             System.exit(1);
         }
-
         contestantsBenchServerHostName = args[2];
         try {
             contestantsBenchServerPortNumb = Integer.parseInt(args[3]);
@@ -48,7 +52,6 @@ public class ClientCoach {
             GenericIO.writelnString("args[5] is not a valid port number!");
             System.exit(1);
         }
-
         playgroundServerHostName = args[4];
         try {
             playgroundServerPortNumb = Integer.parseInt(args[5]);
@@ -60,6 +63,7 @@ public class ClientCoach {
             GenericIO.writelnString("args[7] is not a valid port number!");
             System.exit(1);
         }
+
 
         genReposServerHostName = args[6];
         try {
@@ -106,11 +110,5 @@ public class ClientCoach {
             }
             GenericIO.writelnString("The coach " + (i + 1) + " has terminated.");
         }
-
-        /* Shutdown servers */
-        // refereeSiteStub.shutdown();
-        // contestantsBenchStub.shutdown();
-        // playgroundStub.shutdown();
-        // genReposStub.shutdown();
     }
 }

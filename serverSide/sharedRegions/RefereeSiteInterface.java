@@ -67,7 +67,7 @@ public class RefereeSiteInterface {
                 ((RefereeSiteClientProxy) Thread.currentThread())
                         .setCoachState(inMessage.getCoachState());
 
-                refereeSite.endMatch();
+                refereeSite.waitRefereeCallTrial();
 
                 outMessage = new Message(MessageType.WAITREFEREECALLTRIALDONE, GameConstants.TYPE_COACH,
                         ((RefereeSiteClientProxy) Thread.currentThread()).getCoachId(),

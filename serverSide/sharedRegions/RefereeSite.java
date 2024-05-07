@@ -38,14 +38,14 @@ public class RefereeSite {
   public synchronized void endMatch() {
     RefereeSiteClientProxy proxy = (RefereeSiteClientProxy) Thread.currentThread();
 
-    /* Notify coaches the match is finalized */
-    this.isMatchFinalized = true;
-    notifyAll();
-
     /* Set and register referee state END_OF_THE_MATCH */
     proxy.setRefereeState(RefereeStates.END_OF_THE_MATCH);
 
     repos.setRefereeState(RefereeStates.END_OF_THE_MATCH);
+
+    /* Notify coaches the match is finalized */
+    this.isMatchFinalized = true;
+    notifyAll();
   }
 
   public synchronized void waitRefereeCallTrial() {

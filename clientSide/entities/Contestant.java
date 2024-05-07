@@ -202,7 +202,4 @@ public class Contestant extends Thread {
         this.strength = val;
     }
 
-    public int getCoachId() {
-        return this.contestantId < 5 ? 0 : 1;
-    }
 }

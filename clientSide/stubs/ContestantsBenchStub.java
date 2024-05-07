@@ -30,6 +30,11 @@ public class ContestantsBenchStub {
         this.serverPortNumb = serverPortNumb;
     }
 
+    /**
+     * Contestant wait for call from coach
+     * 
+     * Called by contestant: wait for coach call
+     */
     public void waitForCoachCall() {
         /* Communication channel */
         ClientCom com;
@@ -92,7 +97,7 @@ public class ContestantsBenchStub {
     /**
      * Contestant stay in position if selected by coach
      * 
-     * Called by contestant: wait for coach signal,
+     * Called by contestant: wait for coach signal to stand up,
      * then go to STAND_IN_POSITION state and unblock coach
      */
     public void followCoachAdvice() {
@@ -167,6 +172,7 @@ public class ContestantsBenchStub {
             }
         }
 
+        /* Get current contestant thread */
         Contestant contestant = (Contestant) Thread.currentThread();
 
         outMessage = new Message(MessageType.SEATDOWN, GameConstants.TYPE_CONTESTANT,
@@ -268,6 +274,11 @@ public class ContestantsBenchStub {
         ((Coach) Thread.currentThread()).setCoachState(inMessage.getCoachState());
     }
 
+    /**
+     * Tell contestants bench that match ended
+     * 
+     * Called by referee
+     */
     public void endMatch() {
         /* Communication channel */
         ClientCom com;
@@ -301,6 +312,9 @@ public class ContestantsBenchStub {
         com.close();
     }
 
+    /**
+     * Send message to shutdown contestants bench server
+     */
     public void shutdown() {
         ClientCom com; // communication channel
         Message outMessage, // outgoing message

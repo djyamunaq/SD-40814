@@ -128,9 +128,11 @@ public class PlaygroundStub {
                 Thread.currentThread().sleep((long) (10));
             } catch (InterruptedException e) {
             }
-        }
+        }  
 
-        outMessage = new Message(MessageType.AMDONE);
+        Contestant contestant = (Contestant) Thread.currentThread();
+
+        outMessage = new Message(MessageType.AMDONE, GameConstants.TYPE_CONTESTANT, contestant.getContestantId(), contestant.getContestantState());
 
         com.writeObject(outMessage);
 
@@ -139,6 +141,19 @@ public class PlaygroundStub {
         /* Verify message type */
         if (inMessage.getMsgType() != MessageType.AMDONEDONE) {
             GenericIO.writelnString("Thread " + Thread.currentThread().getName() + ": Invalid message type!");
+            GenericIO.writelnString(inMessage.toString());
+            System.exit(1);
+        }
+        /* Verify contestant id */
+        if (inMessage.getContestantId() != ((Contestant) Thread.currentThread()).getContestantId()) {
+            GenericIO.writelnString("Thread " + Thread.currentThread().getName() + ": Invalid contestant id!");
+            GenericIO.writelnString(inMessage.toString());
+            System.exit(1);
+        }
+        /* Verify contestant state */
+        if ((inMessage.getContestantState() < ContestantStates.SEAT_AT_THE_BENCH)
+                || (inMessage.getContestantState() > ContestantStates.DO_YOUR_BEST)) {
+            GenericIO.writelnString("Thread " + Thread.currentThread().getName() + ": Invalid contestant state!");
             GenericIO.writelnString(inMessage.toString());
             System.exit(1);
         }

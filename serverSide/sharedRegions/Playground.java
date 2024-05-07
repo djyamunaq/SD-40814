@@ -66,7 +66,7 @@ public class Playground {
      */
     private int ropeState = 0;
 
-    private int contestantsDone = 0;
+    private int contestantsDone[];
 
     /**
      * Playground instantiation.
@@ -82,6 +82,8 @@ public class Playground {
 
         this.winsTeam1 = 0;
         this.winsTeam2 = 0;
+
+        this.contestantsDone = new int[2];
     }
 
     /**
@@ -109,8 +111,11 @@ public class Playground {
      * wait for referee signal that trial is asserted
      */
     public synchronized void amDone() {
+        PlaygroundClientProxy proxy = (PlaygroundClientProxy) Thread.currentThread();
+        int team = proxy.getContestantId() < 5 ? 0 : 1;
+
         /* Notify referee contestant is done */
-        this.contestantsDone++;
+        this.contestantsDone[team]++;
         notifyAll();
 
         /* Block waiting for trial assert by referee */
@@ -120,6 +125,8 @@ public class Playground {
             } catch (InterruptedException e) {
             }
         }
+        
+        // GenericIO.writelnString("Game=" + this.currentGame + " | Trial=" + this.currentTrial + " | Team=" + team);
     }
 
     /**
@@ -132,9 +139,6 @@ public class Playground {
         PlaygroundClientProxy proxy = (PlaygroundClientProxy) Thread.currentThread();
         int contestantId = proxy.getContestantId();
 
-        /* Reinitialize variable */
-        this.trialAsserted = false;
-
         /* Block waiting for referee command to start trial */
         while (!this.trialStarted) {
             try {
@@ -142,6 +146,8 @@ public class Playground {
             } catch (InterruptedException e) {
             }
         }
+
+        this.trialAsserted = false;
 
         /* Set and register contestant state DO_YOUR_BEST */
         proxy.setContestantState(ContestantStates.DO_YOUR_BEST);
@@ -216,13 +222,15 @@ public class Playground {
      */
     public synchronized boolean assertTrialDecision() {
         /* Wait for signal for last contestant done signal */
-        while (this.contestantsDone < 6) {
+        while (this.contestantsDone[0] % 3 == 0 && this.contestantsDone[1] % 3 == 0) {
             try {
                 wait();
             } catch (InterruptedException e) {
             }
         }
-        this.contestantsDone = 0;
+
+        this.contestantsDone[0] %= 3;
+        this.contestantsDone[1] %= 3;
 
         /* Reinitialize variable */
         this.trialStarted = false;
@@ -241,7 +249,7 @@ public class Playground {
             this.isMatchFinalized = true;
         }
 
-        /* Signal coaches and contestants that the trial has been asserted */
+        /* Notify coaches and contestants that the trial has been asserted */
         this.trialAsserted = true;
         notifyAll();
 

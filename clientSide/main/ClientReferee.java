@@ -4,13 +4,18 @@ import genclass.GenericIO;
 import clientSide.entities.*;
 import clientSide.stubs.*;
 
+/**
+ * Client referee class
+ * 
+ * Communicate with stubs to do referee stuff
+ */
 public class ClientReferee {
     public static void main(String[] args) {
-        String refereeSiteServerHostName; // name of the platform where is located the barber shop server
+        String refereeSiteServerHostName; // name of the platform where is located the referee site server
         int refereeSiteServerPortNumb = -1; // port number for listening to service requests
-        String contestantsBenchServerHostName; // name of the platform where is located the barber shop server
+        String contestantsBenchServerHostName; // name of the platform where is located the contestants bench server
         int contestantsBenchServerPortNumb = -1; // port number for listening to service requests
-        String playgroundServerHostName; // name of the platform where is located the barber shop server
+        String playgroundServerHostName; // name of the platform where is located the playground server
         int playgroundServerPortNumb = -1; // port number for listening to service requests
         String genReposServerHostName; // name of the platform where is located the general repository server
         int genReposServerPortNumb = -1; // port number for listening to service requests
@@ -93,10 +98,5 @@ public class ClientReferee {
         GenericIO.writelnString("The referee has terminated.");
         GenericIO.writelnString();
 
-        /* Shutdown servers */
-        refereeSiteStub.shutdown();
-        contestantsBenchStub.shutdown();
-        playgroundStub.shutdown();
-        genReposStub.shutdown();
     }
 }

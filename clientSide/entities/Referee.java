@@ -3,7 +3,6 @@ package clientSide.entities;
 import clientSide.stubs.ContestantsBenchStub;
 import clientSide.stubs.PlaygroundStub;
 import clientSide.stubs.RefereeSiteStub;
-import genclass.GenericIO;
 
 /**
  * Referee thread class
@@ -83,7 +82,7 @@ public class Referee extends Thread {
             playground.declareGameWinner();
 
             /* Check if match ended */
-            if (playground.matchEnded()) {
+            if (playground.matchEnded()) {                
                 /* Declare match winner and end match */
                 playground.declareMatchWinner();
                 refereeSite.endMatch();

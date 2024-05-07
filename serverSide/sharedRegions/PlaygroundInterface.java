@@ -1,7 +1,6 @@
 package serverSide.sharedRegions;
 
 import clientSide.entities.CoachStates;
-import clientSide.entities.Contestant;
 import clientSide.entities.ContestantStates;
 import clientSide.entities.GameConstants;
 import clientSide.entities.RefereeStates;
@@ -26,15 +25,8 @@ public class PlaygroundInterface {
         /* Validation of the incoming message */
         switch (inMessage.getMsgType()) {
             case MessageType.GETREADY:
-                if (inMessage.getContestantId() < 0 || inMessage.getContestantId() > 9) {
-                    throw new MessageException("Invalid contestant id!", inMessage);
-                } else if (inMessage.getContestantState() < ContestantStates.SEAT_AT_THE_BENCH
-                        || inMessage.getContestantState() > ContestantStates.DO_YOUR_BEST) {
-                    throw new MessageException("Invalid contestant state!", inMessage);
-                }
-                break;
-
             case MessageType.PULLTHEROPE:
+            case MessageType.AMDONE:
                 if (inMessage.getContestantId() < 0 || inMessage.getContestantId() > 9) {
                     throw new MessageException("Invalid contestant id!", inMessage);
                 } else if (inMessage.getContestantState() < ContestantStates.SEAT_AT_THE_BENCH
@@ -81,7 +73,6 @@ public class PlaygroundInterface {
                 break;
 
             case MessageType.ASSERTTRIALDECISION:
-            case MessageType.AMDONE:
             case MessageType.MATCHENDED:
             case MessageType.GAMEENDED:
             case MessageType.SHUT:
@@ -103,7 +94,7 @@ public class PlaygroundInterface {
                 break;
 
             case MessageType.GAMEENDED:
-                if (playground.matchEnded()) {
+                if (playground.gameEnded()) {
                     outMessage = new Message(MessageType.GAMEENDEDDONE);
                 } else {
                     outMessage = new Message(MessageType.NONE);
@@ -112,9 +103,14 @@ public class PlaygroundInterface {
                 break;
 
             case MessageType.AMDONE:
+                ((PlaygroundClientProxy) Thread.currentThread()).setContestantId(inMessage.getContestantId());
+                ((PlaygroundClientProxy) Thread.currentThread())
+                        .setContestantState(inMessage.getContestantState());
                 playground.amDone();
 
-                outMessage = new Message(MessageType.AMDONEDONE);
+                outMessage = new Message(MessageType.AMDONEDONE, GameConstants.TYPE_CONTESTANT,
+                        ((PlaygroundClientProxy) Thread.currentThread()).getContestantId(),
+                        ((PlaygroundClientProxy) Thread.currentThread()).getContestantState());
 
                 break;
 
